@@ -16,6 +16,14 @@ function git_prompt_legend() {
     echo -n "$reset_color"
 }
 
+function git_current_branch() {
+    git rev-parse --abbrev-ref --symbolic-full-name HEAD 2> /dev/null || return 0
+}
+
+function git_upstream_branch() {
+    git rev-parse --abbrev-ref --symbolic-full-name @{u} 2> /dev/null || return 0
+}
+
 # get the name of the branch we are on
 function git_prompt_info() {
   if [[ "$(command git config --get oh-my-zsh.hide-status 2>/dev/null)" != "1" ]]; then
