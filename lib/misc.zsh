@@ -6,6 +6,10 @@ for d in $fpath; do
 	fi
 done
 
+## file rename magick
+autoload -U zmv
+bindkey "^[m" copy-prev-shell-word
+
 ## jobs
 setopt long_list_jobs
 
@@ -16,6 +20,11 @@ export LESS="-R"
 ## super user alias
 alias _='sudo'
 alias please='sudo'
+
+## pretty man pages
+function pman() {
+    man $1 -t | open -f -a Preview
+}
 
 ## more intelligent acking for ubuntu users
 alias afind='ack-grep -il'
