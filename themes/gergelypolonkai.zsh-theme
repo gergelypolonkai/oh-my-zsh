@@ -60,11 +60,13 @@ function precmd {
     local rubypromptsize=${#${rubyprompt}}
     local pwdsize=${#${(%):-%~}}
     local jhbpromptsize=${#${jhbprompt}}
+    local addonsize=0
+    (( addonsize=$rubypromptsize + $pwdsize + $jhbpromptsize ))
 
-    if [[ "$promptsize + $rubypromptsize + $pwdsize + $jhbpromptsize" -gt $TERMWIDTH ]]; then
+    if [[ "$promptsize + $addonsize" -gt $TERMWIDTH ]]; then
         ((PR_PWDLEN=$TERMWIDTH - $promptsize))
     else
-        PR_FILLBAR="\${(l.(($TERMWIDTH - ($promptsize + $rubypromptsize + $pwdsize + $jhbpromptsize)))..${PR_HBAR}.)}"
+        PR_FILLBAR="\${(l.(($TERMWIDTH - ($promptsize + $addonsize)))..${PR_HBAR}.)}"
     fi
 }
 
