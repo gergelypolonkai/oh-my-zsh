@@ -37,6 +37,12 @@ function gp_gpi {
     echo "$ZSH_THEME_GIT_PROMPT_PREFIX$pr$ZSH_THEME_GIT_PROMPT_SUFFIX"
 }
 
+function gp_vpi {
+    type virtualenv_prompt_info &> /dev/null || return
+
+    virtualenv_prompt_info
+}
+
 function gp_gps {
     type git_prompt_status &> /dev/null || return
 
@@ -56,12 +62,14 @@ function precmd {
     local promptsize=${#${(%):---(%n@%m:%l)---()--}}
     local rubyprompt=`gp_rpi`
     local jhbprompt="`jhbuild_prompt`"
+    local venvprompt="`gp_vpi`"
 
     local rubypromptsize=${#${rubyprompt}}
     local pwdsize=${#${(%):-%~}}
     local jhbpromptsize=${#${jhbprompt}}
+    local venvpromptsize=${#${venvprompt}}
     local addonsize=0
-    (( addonsize=$rubypromptsize + $pwdsize + $jhbpromptsize ))
+    (( addonsize=$rubypromptsize + $pwdsize + $jhbpromptsize + $venvpromptsize ))
 
     if [[ "$promptsize + $addonsize" -gt $TERMWIDTH ]]; then
         ((PR_PWDLEN=$TERMWIDTH - $promptsize))
@@ -155,7 +163,7 @@ setprompt () {
     PROMPT='$PR_SET_CHARSET$PR_STITLE${(e)PR_TITLEBAR}\
 $PR_CYAN$PR_SHIFT_IN$PR_ULCORNER$PR_HBAR$PR_SHIFT_OUT$PR_GREY(\
 $PR_GREEN%$PR_PWDLEN<...<%~%<<\
-$PR_GREY)`gp_rpi`%{$fg[red]%}`jhbuild_prompt`$PR_CYAN$PR_SHIFT_IN$PR_HBAR$PR_HBAR${(e)PR_FILLBAR}$PR_HBAR$PR_SHIFT_OUT$PR_GREY(\
+$PR_GREY)`gp_rpi`%{$fg[red]%}`jhbuild_prompt``gp_vpi`$PR_CYAN$PR_SHIFT_IN$PR_HBAR$PR_HBAR${(e)PR_FILLBAR}$PR_HBAR$PR_SHIFT_OUT$PR_GREY(\
 $PR_CYAN%(!.%SROOT%s.%n)$PR_GREY@$PR_GREEN%m:%l\
 $PR_GREY)$PR_CYAN$PR_SHIFT_IN$PR_HBAR$PR_URCORNER$PR_SHIFT_OUT\
 
