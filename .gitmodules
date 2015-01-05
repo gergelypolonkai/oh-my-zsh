@@ -1,0 +1,3 @@
+[submodule "plugins/virtualenv-prompt"]
+	path = plugins/virtualenv-prompt
+	url = https://github.com/tonyseek/oh-my-zsh-virtualenv-prompt
