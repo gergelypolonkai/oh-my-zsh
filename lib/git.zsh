@@ -82,6 +82,15 @@ function git_commits_ahead() {
   fi
 }
 
+#
+# Will return the current branch name
+# Usage example: git pull origin $(current_branch)
+#
+function current_branch() {
+  ref=$(git symbolic-ref HEAD 2> /dev/null) || return
+  echo ${ref#refs/heads/}
+}
+
 # Formats prompt string for current git commit short SHA
 function git_prompt_short_sha() {
   SHA=$(command git rev-parse --short HEAD 2> /dev/null) && echo "$ZSH_THEME_GIT_PROMPT_SHA_BEFORE$SHA$ZSH_THEME_GIT_PROMPT_SHA_AFTER"
