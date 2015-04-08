@@ -75,6 +75,20 @@ git_remote_status() {
     fi
 }
 
+function git_prompt_cherry() {
+  local cdiff=`git cherry 2>/dev/null || return`
+  local plus=$(echo "${cdiff}" | grep -c '^+')
+  local minus=$(echo "{cdiff}" | grep -c '^-')
+
+  if [[ "$plus" -gt 0 && "$minus" -gt 0 ]]; then
+    echo "$ZSH_THEME_GIT_PROMPT_DIVERGE"
+  elif [[ "$plus" -gt 0 ]]; then
+    echo "$ZSH_THEME_GIT_PROMPT_BEHIND"
+  else
+    echo "$ZSH_THEME_GIT_PROMPT_AHEAD"
+  fi
+}
+
 # Checks if there are commits ahead from remote
 function git_prompt_ahead() {
   if $(echo "$(command git log @{upstream}..HEAD 2> /dev/null)" | grep '^commit' &> /dev/null); then
