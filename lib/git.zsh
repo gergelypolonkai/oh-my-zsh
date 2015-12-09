@@ -94,14 +94,14 @@ function git_commits_ahead() {
 
 # Outputs if current branch is ahead of remote
 function git_prompt_ahead() {
-  if [[ -n "$(command git rev-list origin/$(current_branch)..HEAD 2> /dev/null)" ]]; then
+  if [[ -n "$(command git rev-list @{upstream}..HEAD 2> /dev/null)" ]]; then
     echo "$ZSH_THEME_GIT_PROMPT_AHEAD"
   fi
 }
 
 # Outputs if current branch is behind remote
 function git_prompt_behind() {
-  if [[ -n "$(command git rev-list HEAD..origin/$(current_branch) 2> /dev/null)" ]]; then
+  if [[ -n "$(command git rev-list HEAD..@{upstream} 2> /dev/null)" ]]; then
     echo "$ZSH_THEME_GIT_PROMPT_BEHIND"
   fi
 }
